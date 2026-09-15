@@ -1,0 +1,15 @@
+node_modules/
+dist/
+
+# Local tooling and editor state
+.claude/
+.superpowers/
+.idea/
+.vscode/
+
+# Secrets
+.env
+.env.*
+
+# OS
+.DS_Store

@@ -1,0 +1,118 @@
+/*
+ * Optional default theme for @qrotux/editrig-shadcn-react.
+ *
+ * Import it once, after `@import "tailwindcss"`:
+ *
+ *   @import "tailwindcss";
+ *   @import "@qrotux/editrig-shadcn-react/theme.css";
+ *
+ * It does two things: it maps the shadcn theme tokens to Tailwind utilities
+ * (so `bg-background`, `text-muted-foreground`, `border-input`, `rounded-md`
+ * are generated), and it supplies default token VALUES at zero specificity so
+ * a bare project is styled out of the box. A project that already defines the
+ * shadcn tokens (its own `:root { --background: … }`, in `@layer base` or
+ * unlayered) overrides these defaults with no import-order requirement: a real
+ * `:root` beats `:where(:root)`, and an `@layer base` declaration beats this
+ * `@layer theme` one. So this file is safe to import even in a project that has
+ * its own shadcn theme — it fills only the tokens the host leaves undefined.
+ *
+ * Dark mode: the `.dark` values below apply under a class-based dark mode. The
+ * `dark:` utilities the form body uses (from @rjsf/shadcn) still need the host
+ * to declare the class variant once, e.g.
+ *   @custom-variant dark (&:where(.dark, .dark *));
+ */
+
+/* Token → utility mapping. `inline` resolves the var at the use site, so
+ * `rounded-md` follows whatever `--radius` is in scope. The radius formulas are
+ * the canonical shadcn scale; a host that defines the same mapping (identical
+ * values) makes this a no-op regardless of import order. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* Default token values, zero specificity so any host `:root`/`.dark` wins.
+ * In @layer theme (below @layer base) so a shadcn project's own `@layer base`
+ * tokens win by layer too. Values are the shadcn "default" palette. */
+@layer theme {
+  :where(:root) {
+    --radius: 0.625rem;
+
+    --background: oklch(100% 0 0);
+    --foreground: oklch(14.5% 0 0);
+    --card: oklch(100% 0 0);
+    --card-foreground: oklch(14.5% 0 0);
+    --popover: oklch(100% 0 0);
+    --popover-foreground: oklch(14.5% 0 0);
+    --primary: oklch(20.5% 0 0);
+    --primary-foreground: oklch(98.5% 0 0);
+    --secondary: oklch(97% 0 0);
+    --secondary-foreground: oklch(20.5% 0 0);
+    --muted: oklch(97% 0 0);
+    --muted-foreground: oklch(55.6% 0 0);
+    --accent: oklch(97% 0 0);
+    --accent-foreground: oklch(20.5% 0 0);
+    --destructive: oklch(57.7% 0.245 27.325);
+    --destructive-foreground: oklch(100% 0 0);
+    --border: oklch(92.2% 0 0);
+    --input: oklch(92.2% 0 0);
+    --ring: oklch(70.8% 0 0);
+  }
+
+  :where(.dark) {
+    --background: oklch(14.5% 0 0);
+    --foreground: oklch(98.5% 0 0);
+    --card: oklch(20.5% 0 0);
+    --card-foreground: oklch(98.5% 0 0);
+    --popover: oklch(26.9% 0 0);
+    --popover-foreground: oklch(98.5% 0 0);
+    --primary: oklch(92.2% 0 0);
+    --primary-foreground: oklch(20.5% 0 0);
+    --secondary: oklch(26.9% 0 0);
+    --secondary-foreground: oklch(98.5% 0 0);
+    --muted: oklch(26.9% 0 0);
+    --muted-foreground: oklch(70.8% 0 0);
+    --accent: oklch(37.1% 0 0);
+    --accent-foreground: oklch(98.5% 0 0);
+    --destructive: oklch(70.4% 0.191 22.216);
+    --destructive-foreground: oklch(98.5% 0 0);
+    --border: oklch(27.5% 0 0);
+    --input: oklch(32.5% 0 0);
+    --ring: oklch(55.6% 0 0);
+  }
+}
+
+/* Tailwind v4's `border`/`divide` utilities default to currentColor. shadcn
+ * projects reset this to the border token; a bare project needs the same, or
+ * every border in the form renders in the text colour. In @layer base and after
+ * `@import "tailwindcss"`, so it beats Tailwind's preflight by source order at
+ * equal specificity; a host's own base reset, imported later, still wins. Zero
+ * specificity (`:where`) also lets any real selector the host writes override
+ * it. */
+@layer base {
+  :where(*, ::before, ::after) {
+    border-color: var(--border);
+  }
+}

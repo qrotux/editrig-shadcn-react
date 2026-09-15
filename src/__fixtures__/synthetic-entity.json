@@ -1,0 +1,14 @@
+{
+  "name": "synthetic",
+  "id": null,
+  "schema": {
+    "type": "object",
+    "required": ["title"],
+    "properties": {
+      "title": { "type": "string", "title": "Title" },
+      "note": { "type": "string", "title": "Note" }
+    }
+  },
+  "uiSchema": {},
+  "data": {}
+}
